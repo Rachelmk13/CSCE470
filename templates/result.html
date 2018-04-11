@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Result</title>
+
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
+
+    <!-- CSS -->
+    <!-- Add Material font (Roboto) and Material icon as needed -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i|Roboto+Mono:300,400,700|Roboto+Slab:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Add Material CSS, replace Bootstrap CSS -->
+    <link href="../static/css/material.min.css" rel="stylesheet">
+
+	<!-- Font Awesome for Icons -->
+	<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+	<!-- Custom Stylesheet -->
+	<link rel="stylesheet" type="text/css" href="../static/css/style.css">
+</head>
+
+<body id="result-page">
+	<div class="row">
+		<div class="col-sm-4" id="data-container">
+			<div id="search-data">
+				<h2 class="search-header">Search Criterias</h2>
+				<form>
+				  <div class="form-group row">
+				    <label for="location-search" class="offset-1 col-form-label"></label>
+				    <div class="col-sm-9">
+				      <input type="text" class="form-control" id="location-search" placeholder="Location">
+				    </div>
+				  </div>
+				  <div class="form-group row">
+				    <label for="time-interval-search" class="offset-1 col-form-label"></label>
+				    <div class="col-sm-9">
+				      <input type="text" class="form-control" id="time-interval-search" placeholder="Available Time">
+				    </div>
+				  </div>
+				  <div class="form-group row">
+				    <div class="col-sm-10" id="update-btn">
+				      <button type="submit" class="btn btn-primary">Update Search</button>
+				    </div>
+				  </div>
+				</form>
+
+				<div id="search-results">
+					<h2 class="search-header">Search Results</h2>
+					<p class="overview">Total Estimated Time: <span id="time-result"></span></p>
+					<p class="overview">Total Estimated Distance: <span id="distance-result"></span></p>
+
+					<div id="search-container">
+						<div class="location-data">
+							<div class="sidenav">
+							<div class="list-group">
+							  <button type="button" class="list-group-item list-group-item-action">
+							  	<h5>Location 1</h5>
+							  	Rating: 3 stars
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action">
+							  	<h5>Location 2</h5>
+							  	Rating: 3 stars
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action">
+							  	<h5>Location 3</h5>
+							  	Rating: 3 stars
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action">
+							  	<h5>Location 4</h5>
+							  	Rating: 3 stars
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action">
+							  	<h5>Location 5</h5>
+							  	Rating: 3 stars
+							  </button>
+							</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+		<div class="col-sm-8" id="map-container">
+			<div id="map"></div>
+		</div>
+
+	</div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+    <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
+    <script src="../static/js/material.min.js"></script>
+
+    <script type="text/javascript" src="../static/js/result.js"></script>
+
+    <!-- Replace the value of the key parameter with your own API key. -->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4&callback=initMap" async defer></script>
+
+</body>
+</html>
