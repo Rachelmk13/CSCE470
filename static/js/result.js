@@ -1,3 +1,62 @@
+function getquerystring() {
+  qstr = window.location.href.slice(window.location.href.indexOf('?') + 1);
+  console.log('qstr: '+qstr);
+
+
+}
+
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+function get_stuff(query_info){
+  //httpGet('http://localhost:8983/solr/xing/select/?q=*:*');
+  console.log("get_stuff called with "+query_info);
+  $.ajax({
+  'url': 'http://localhost:8983/solr/xing/select',
+  'data': {'wt':'json', 'q':query_info},
+  'success': function(data) { console.log(data); },
+  'dataType': 'jsonp',
+  'jsonp': 'json.wrf'
+});
+}
+
+
+
+function get_google(query_info){
+  //httpGet('http://localhost:8983/solr/xing/select/?q=*:*');
+  console.log("get_google called with "+query_info);
+  $.ajax({
+  'url': 'https://maps.googleapis.com/maps/api/geocode/json?address='+query_info+'&key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4',
+  'data': {'wt':'json', 'q':query_info},
+  'success': function(data) { console.log(data); },
+  'dataType': 'jsonp',
+  'jsonp': 'json.wrf'
+});
+}
+
+function get_lat_lon(){
+  var loc = [];
+  var form_data = getUrlVars();
+
+}
+
+
+// -----------------------------------------------------------------------------
+
+
+
+
+
 var map;
 function initMap() {
   //Setup for showing multiple locations
