@@ -18,9 +18,20 @@ function url_to_query()
 }
 
 function form_to_query(){
-  console.log("ugh");
-  console.log($("form").serialize());
-  var hashes = 
+  //console.log("ugh");
+  //console.log($("form").serialize());
+
+  var vars = [], hash;
+  var hashes = $("form").serialize().split('&');
+  console.log(hashes);
+  for(var i = 0; i < hashes.length; i++)
+  {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+  }
+  console.log(vars);
+  query(vars);
 }
 
 function query(vars){
@@ -57,13 +68,7 @@ function query(vars){
     <input name="location" type="text">
     <input name="time" type="text">
     <button type="submit">submit</button>
-
-<div id="result"></div>
-<p/><pre>Raw JSON String: <div id="raw"></div></pre>
 </form>
-
-<button onclick='url_to_query()'>button!</button>
-<button onclick="get_google('610+Oak+Park+Drive+Round+Rock+TX')">google!</button>
 
 </body>
 </html>
