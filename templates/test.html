@@ -4,14 +4,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script language="Javascript">
 
-function getquerystring() {
-  qstr = window.location.href.slice(window.location.href.indexOf('?') + 1);
-  console.log('qstr: '+qstr);
-
-
-}
-
-function getUrlVars()
+function url_to_query()
 {
     var vars = [], hash;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -21,67 +14,56 @@ function getUrlVars()
         vars.push(hash[0]);
         vars[hash[0]] = hash[1];
     }
-    console.log(vars);
-    return vars;
+    query(vars);
 }
 
-function get_stuff(query_info){
-  //httpGet('http://localhost:8983/solr/xing/select/?q=*:*');
-  console.log("get_stuff called with "+query_info);
-  $.ajax({
-  'url': 'http://localhost:8983/solr/xing/select',
-  'data': {'wt':'json', 'q':query_info},
-  'success': function(data) { console.log(data); },
-  'dataType': 'jsonp',
-  'jsonp': 'json.wrf'
-});
+function form_to_query(){
+  console.log("ugh");
+  console.log($("form").serialize());
+  var hashes = 
 }
 
-function get_google(query_info){
-  //httpGet('http://localhost:8983/solr/xing/select/?q=*:*');
-  console.log("get_google called with "+query_info);
-  $.ajax({
-  'url': 'https://maps.googleapis.com/maps/api/geocode/json?address='+query_info+'&key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4',
-  'data': {'wt':'json', 'q':""},
-  'success': function(data) {
-    console.log(data);
-    return data.results[0].geometry.location;
-  },
-  'dataType': 'jsonp',
-  'jsonp': 'json.wrf'
-});
-  console.log("FAIL");
+function query(vars){
+      $.get("https://maps.googleapis.com/maps/api/geocode/json?address="+vars["location"]+"&key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4", function(data, status){
+      console.log(data.results[0].geometry.location);
+      var location = data.results[0].geometry.location
+      var time = vars["time"];
+      var lat_min = location["lat"] - time;
+      var lat_max = location["lat"] + time;
+      var lng_min = location["lng"] - time;
+      var lng_max = location["lng"] + time;
+
+      console.log("lat: ["+lat_min+","+lat_max+"]\nlng: ["+lng_min+","+lng_max+"]")
+
+      var query_str = "geometry.location.lat:["+lat_min+" TO "+lat_max+"] AND geometry.location.lng:["+lng_min+" TO "+lng_max+"]";
+      $.ajax({
+      'url': 'http://localhost:8983/solr/xing/select',
+      'data': {'wt':'json', 'q':query_str, 'fl':'*'},
+      'success': function(data) { console.log(data); },
+      'dataType': 'jsonp',
+      'jsonp': 'json.wrf'
+    });
+      return data.results[0].geometry.location;
+  });
 }
-function get_data(){
-  var info = getUrlVars();
-  console.log(info["location"]);
-  var loc_info = get_google(info["location"]);
-  console.log(loc_info);
-  var time_info = info["time"];
-  var lat_min = loc_info["lat"] - time_info;
-  var lat_max = loc_info["lat"] + time_info;
-  var lon_min = loc_info["lng"] - time_info;
-  var lon_max = loc_info["lat"] + time_info;
-  var query_str = "geometry.location.lat:["+lat_min+" TO "+lat_max+"]&gometry.location.lng:["+lon_min+" TO "+lon_max+"]";
-  console.log(get_stuff(query_str))
-  return get_stuff(query_str);
-}
+
 
 </script>
 </head>
 <body>
 
-<form name="f1">
+<form name="f1" onsubmit="form_to_query(); return false;">
   <p>query:
     <input name="location" type="text">
     <input name="time" type="text">
-  <input value="Go" type="submit"></p>
+    <button type="submit">submit</button>
 
 <div id="result"></div>
 <p/><pre>Raw JSON String: <div id="raw"></div></pre>
 </form>
 
-<button onclick='get_data()'>button!</button>
+<button onclick='url_to_query()'>button!</button>
+<button onclick="get_google('610+Oak+Park+Drive+Round+Rock+TX')">google!</button>
 
 </body>
 </html>

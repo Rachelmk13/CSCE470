@@ -1,12 +1,10 @@
-function getquerystring() {
-  qstr = window.location.href.slice(window.location.href.indexOf('?') + 1);
-  console.log('qstr: '+qstr);
+$(document).ready(function(){
+  url_to_query();
+});
 
-
-}
-
-function getUrlVars()
+function url_to_query()
 {
+    alert("url_to_query called!");
     var vars = [], hash;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
     for(var i = 0; i < hashes.length; i++)
@@ -15,41 +13,40 @@ function getUrlVars()
         vars.push(hash[0]);
         vars[hash[0]] = hash[1];
     }
-    return vars;
-}
-
-function get_stuff(query_info){
-  //httpGet('http://localhost:8983/solr/xing/select/?q=*:*');
-  console.log("get_stuff called with "+query_info);
-  $.ajax({
-  'url': 'http://localhost:8983/solr/xing/select',
-  'data': {'wt':'json', 'q':query_info},
-  'success': function(data) { console.log(data); },
-  'dataType': 'jsonp',
-  'jsonp': 'json.wrf'
-});
-}
-
-
-
-function get_google(query_info){
-  //httpGet('http://localhost:8983/solr/xing/select/?q=*:*');
-  console.log("get_google called with "+query_info);
-  $.ajax({
-  'url': 'https://maps.googleapis.com/maps/api/geocode/json?address='+query_info+'&key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4',
-  'data': {'wt':'json', 'q':query_info},
-  'success': function(data) { console.log(data); },
-  'dataType': 'jsonp',
-  'jsonp': 'json.wrf'
-});
-}
-
-function get_lat_lon(){
-  var loc = [];
-  var form_data = getUrlVars();
+    if(vars[vars[0]] != "" && vars[vars[1]] != ""){
+      query(vars);
+      //console.log(vars[vars[0]]);
+    }
+    else{
+      console.log("no form data");
+    }
 
 }
 
+function query(vars){
+      $.get("https://maps.googleapis.com/maps/api/geocode/json?address="+vars["location"]+"&key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4", function(data, status){
+      console.log(data.results[0].geometry.location);
+      var location = data.results[0].geometry.location
+      var time = vars["time"];
+      var lat_min = location["lat"] - time;
+      var lat_max = location["lat"] + time;
+      var lng_min = location["lng"] - time;
+      var lng_max = location["lng"] + time;
+
+      console.log("lat: ["+lat_min+","+lat_max+"]\nlng: ["+lng_min+","+lng_max+"]")
+
+      var query_str = "geometry.location.lat:["+lat_min+" TO "+lat_max+"] AND geometry.location.lng:["+lng_min+" TO "+lng_max+"]";
+      $.ajax({
+      'url': 'http://localhost:8983/solr/xing/select',
+      'data': {'wt':'json', 'q':query_str, 'fl':'*'},
+      'success': function(data) { console.log(data); return false;},
+      'dataType': 'jsonp',
+      'jsonp': 'json.wrf'
+    });
+       //return data.results[0].geometry.location;
+       return false;
+  });
+}
 
 // -----------------------------------------------------------------------------
 

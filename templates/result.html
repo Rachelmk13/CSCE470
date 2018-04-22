@@ -25,16 +25,18 @@
 	<link rel="stylesheet" type="text/css" href="../static/css/style.css">
 </head>
 
+
+
 <body id="result-page">
 	<div class="row">
 		<div class="col-sm-4" id="data-container">
 			<div id="search-data">
 				<h2 class="search-header">Search Criteria</h2>
-				<form>
+				<form id="res_form" action="/index.html"  method="get" onsubmit="url_to_query(); return false;">
 				  <div class="form-group row">
 				    <label for="location-search" class="offset-1 col-form-label"></label>
 				    <div class="col-sm-9">
-				      <input name="loc" type="text" class="form-control" id="location-search" placeholder="Location">
+				      <input name="location" type="text" class="form-control" id="location-search" placeholder="Location">
 				    </div>
 				  </div>
 				  <div class="form-group row">
@@ -96,6 +98,7 @@
 	</div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
@@ -107,6 +110,59 @@
 
     <!-- Replace the value of the key parameter with your own API key. -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4&callback=initMap" async defer></script>
+
+	<script>
+	$(document).ready(function(){
+	  url_to_query();
+	});
+
+	function url_to_query()
+	{
+	    alert("url_to_query called!");
+	    var vars = [], hash;
+	    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	    for(var i = 0; i < hashes.length; i++)
+	    {
+	        hash = hashes[i].split('=');
+	        vars.push(hash[0]);
+	        vars[hash[0]] = hash[1];
+	    }
+	    if(vars[vars[0]] != "" && vars[vars[1]] != ""){
+	      query(vars);
+	      //console.log(vars[vars[0]]);
+	    }
+	    else{
+	      console.log("no form data");
+	    }
+
+	}
+
+	function query(vars){
+	      $.get("https://maps.googleapis.com/maps/api/geocode/json?address="+vars["location"]+"&key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4", function(data, status){
+	      console.log(data.results[0].geometry.location);
+	      var location = data.results[0].geometry.location
+	      var time = vars["time"];
+	      var lat_min = location["lat"] - time;
+	      var lat_max = location["lat"] + time;
+	      var lng_min = location["lng"] - time;
+	      var lng_max = location["lng"] + time;
+
+	      console.log("lat: ["+lat_min+","+lat_max+"]\nlng: ["+lng_min+","+lng_max+"]")
+
+	      var query_str = "geometry.location.lat:["+lat_min+" TO "+lat_max+"] AND geometry.location.lng:["+lng_min+" TO "+lng_max+"]";
+	      $.ajax({
+	      'url': 'http://localhost:8983/solr/xing/select',
+	      'data': {'wt':'json', 'q':query_str, 'fl':'*'},
+	      'success': function(data) { console.log(data); return false;},
+	      'dataType': 'jsonp',
+	      'jsonp': 'json.wrf'
+	    });
+	       //return data.results[0].geometry.location;
+	       return false;
+	  });
+	}
+
+	</script>
 
 </body>
 </html>
