@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>Solr Ajax Example</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script language="Javascript">
+
+function url_to_query()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    query(vars);
+}
+
+function form_to_query(){
+  //console.log("ugh");
+  //console.log($("form").serialize());
+
+  var vars = [], hash;
+  var hashes = $("form").serialize().split('&');
+  console.log(hashes);
+  for(var i = 0; i < hashes.length; i++)
+  {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+  }
+  console.log(vars);
+  query(vars);
+}
+
+function query(vars){
+      $.get("https://maps.googleapis.com/maps/api/geocode/json?address="+vars["location"]+"&key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4", function(data, status){
+      console.log(data.results[0].geometry.location);
+      var location = data.results[0].geometry.location
+      var time = vars["time"];
+      var lat_min = location["lat"] - time;
+      var lat_max = location["lat"] + time;
+      var lng_min = location["lng"] - time;
+      var lng_max = location["lng"] + time;
+
+      console.log("lat: ["+lat_min+","+lat_max+"]\nlng: ["+lng_min+","+lng_max+"]")
+
+      var query_str = "geometry.location.lat:["+lat_min+" TO "+lat_max+"] AND geometry.location.lng:["+lng_min+" TO "+lng_max+"]";
+      $.ajax({
+      'url': 'http://localhost:8983/solr/onPointCore/select',
+      'data': {'wt':'json', 'q':query_str, 'fl':'*'},
+      'success': function(data) { console.log(data); },
+      'dataType': 'jsonp',
+      'jsonp': 'json.wrf'
+    });
+      alert("pause");
+      sessionStorage.setItem("returnedData", JSON.stringify(data));
+      return data.results[0].geometry.location;
+  });
+}
+
+
+</script>
+</head>
+<body>
+
+<form name="f1" onsubmit="form_to_query(); return false;">
+  <p>query:
+    <input name="location" type="text">
+    <input name="time" type="text">
+    <button type="submit">submit</button>
+</form>
+
+</body>
+</html>

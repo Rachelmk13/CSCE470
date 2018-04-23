@@ -25,22 +25,24 @@
 	<link rel="stylesheet" type="text/css" href="../static/css/style.css">
 </head>
 
+
+
 <body id="result-page">
 	<div class="row">
 		<div class="col-sm-4" id="data-container">
 			<div id="search-data">
 				<h2 class="search-header">Search Criteria</h2>
-				<form>
+				<form id="res_form" action="/index.html"  method="get" onsubmit="url_to_query(); return false;">
 				  <div class="form-group row">
 				    <label for="location-search" class="offset-1 col-form-label"></label>
 				    <div class="col-sm-9">
-				      <input type="text" class="form-control" id="location-search" placeholder="Location">
+				      <input name="location" type="text" class="form-control" id="location-search" placeholder="Location">
 				    </div>
 				  </div>
 				  <div class="form-group row">
 				    <label for="time-interval-search" class="offset-1 col-form-label"></label>
 				    <div class="col-sm-9">
-				      <input type="text" class="form-control" id="time-interval-search" placeholder="Available Time">
+				      <input name="time" type="text" class="form-control" id="time-interval-search" placeholder="Available Time">
 				    </div>
 				  </div>
 				  <div class="form-group row">
@@ -59,25 +61,45 @@
 						<div class="location-data">
 							<div class="sidenav">
 							<div class="list-group">
-							  <button type="button" class="list-group-item list-group-item-action">
-							  	<h5>Location 1</h5>
-							  	Rating: 3 stars
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(0)" >
+							  	<h5 id="loc0">Location 1</h5>
+							  	<div id="rat0">Rating: 3 stars</div>
 							  </button>
-							  <button type="button" class="list-group-item list-group-item-action">
-							  	<h5>Location 2</h5>
-							  	Rating: 3 stars
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(1)">
+							  	<h5 id="loc1">Location 2</h5>
+							  	<div id="rat1">Rating: 3 stars</div>
 							  </button>
-							  <button type="button" class="list-group-item list-group-item-action">
-							  	<h5>Location 3</h5>
-							  	Rating: 3 stars
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(2)">
+							  	<h5 id="loc2">Location 3</h5>
+							  	<div id="rat2">Rating: 3 stars</div>
 							  </button>
-							  <button type="button" class="list-group-item list-group-item-action">
-							  	<h5>Location 4</h5>
-							  	Rating: 3 stars
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(3)">
+							  	<h5 id="loc3">Location 4</h5>
+							  	<div id="rat3">Rating: 3 stars</div>
 							  </button>
-							  <button type="button" class="list-group-item list-group-item-action">
-							  	<h5>Location 5</h5>
-							  	Rating: 3 stars
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(4)">
+							  	<h5 id="loc4">Location 5</h5>
+							  	<div id="rat4">Rating: 3 stars</div>
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(5)">
+							  	<h5 id="loc5">Location 6</h5>
+							  	<div id="rat5">Rating: 3 stars</div>
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(6)">
+							  	<h5 id="loc6">Location 7</h5>
+							  	<div id="rat6">Rating: 3 stars</div>
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(7)">
+							  	<h5 id="loc7">Location 8</h5>
+							  	<div id="rat7">Rating: 3 stars</div>
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(8)">
+							  	<h5 id="loc8">Location 9</h5>
+							  	<div id="rat8">Rating: 3 stars</div>
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(9)">
+							  	<h5 id="loc9">Location 10</h5>
+							  	<div id="rat9">Rating: 3 stars</div>
 							  </button>
 							</div>
 							</div>
@@ -96,17 +118,20 @@
 	</div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
     <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
     <script src="../static/js/material.min.js"></script>
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/result.js"></script>
 
     <!-- Replace the value of the key parameter with your own API key. -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4&callback=initMap" async defer></script>
+
+	
 
 </body>
 </html>
