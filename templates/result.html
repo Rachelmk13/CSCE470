@@ -61,25 +61,45 @@
 						<div class="location-data">
 							<div class="sidenav">
 							<div class="list-group">
-							  <button type="button" class="list-group-item list-group-item-action">
-							  	<h5>Location 1</h5>
-							  	Rating: 3 stars
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(0)" >
+							  	<h5 id="loc0">Location 1</h5>
+							  	<div id="rat0">Rating: 3 stars</div>
 							  </button>
-							  <button type="button" class="list-group-item list-group-item-action">
-							  	<h5>Location 2</h5>
-							  	Rating: 3 stars
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(1)">
+							  	<h5 id="loc1">Location 2</h5>
+							  	<div id="rat1">Rating: 3 stars</div>
 							  </button>
-							  <button type="button" class="list-group-item list-group-item-action">
-							  	<h5>Location 3</h5>
-							  	Rating: 3 stars
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(2)">
+							  	<h5 id="loc2">Location 3</h5>
+							  	<div id="rat2">Rating: 3 stars</div>
 							  </button>
-							  <button type="button" class="list-group-item list-group-item-action">
-							  	<h5>Location 4</h5>
-							  	Rating: 3 stars
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(3)">
+							  	<h5 id="loc3">Location 4</h5>
+							  	<div id="rat3">Rating: 3 stars</div>
 							  </button>
-							  <button type="button" class="list-group-item list-group-item-action">
-							  	<h5>Location 5</h5>
-							  	Rating: 3 stars
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(4)">
+							  	<h5 id="loc4">Location 5</h5>
+							  	<div id="rat4">Rating: 3 stars</div>
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(5)">
+							  	<h5 id="loc5">Location 6</h5>
+							  	<div id="rat5">Rating: 3 stars</div>
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(6)">
+							  	<h5 id="loc6">Location 7</h5>
+							  	<div id="rat6">Rating: 3 stars</div>
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(7)">
+							  	<h5 id="loc7">Location 8</h5>
+							  	<div id="rat7">Rating: 3 stars</div>
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(8)">
+							  	<h5 id="loc8">Location 9</h5>
+							  	<div id="rat8">Rating: 3 stars</div>
+							  </button>
+							  <button type="button" class="list-group-item list-group-item-action" onclick="openDetails(9)">
+							  	<h5 id="loc9">Location 10</h5>
+							  	<div id="rat9">Rating: 3 stars</div>
 							  </button>
 							</div>
 							</div>
@@ -105,64 +125,13 @@
 
     <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
     <script src="../static/js/material.min.js"></script>
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/result.js"></script>
 
     <!-- Replace the value of the key parameter with your own API key. -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4&callback=initMap" async defer></script>
 
-	<script>
-	$(document).ready(function(){
-	  url_to_query();
-	});
-
-	function url_to_query()
-	{
-	    alert("url_to_query called!");
-	    var vars = [], hash;
-	    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-	    for(var i = 0; i < hashes.length; i++)
-	    {
-	        hash = hashes[i].split('=');
-	        vars.push(hash[0]);
-	        vars[hash[0]] = hash[1];
-	    }
-	    if(vars[vars[0]] != "" && vars[vars[1]] != ""){
-	      query(vars);
-	      //console.log(vars[vars[0]]);
-	    }
-	    else{
-	      console.log("no form data");
-	    }
-
-	}
-
-	function query(vars){
-	      $.get("https://maps.googleapis.com/maps/api/geocode/json?address="+vars["location"]+"&key=AIzaSyAO_ZRxv43ImJen5xpmw1FDJrwdBTNDsJ4", function(data, status){
-	      console.log(data.results[0].geometry.location);
-	      var location = data.results[0].geometry.location
-	      var time = vars["time"];
-	      var lat_min = location["lat"] - time;
-	      var lat_max = location["lat"] + time;
-	      var lng_min = location["lng"] - time;
-	      var lng_max = location["lng"] + time;
-
-	      console.log("lat: ["+lat_min+","+lat_max+"]\nlng: ["+lng_min+","+lng_max+"]")
-
-	      var query_str = "geometry.location.lat:["+lat_min+" TO "+lat_max+"] AND geometry.location.lng:["+lng_min+" TO "+lng_max+"]";
-	      $.ajax({
-	      'url': 'http://localhost:8983/solr/xing/select',
-	      'data': {'wt':'json', 'q':query_str, 'fl':'*'},
-	      'success': function(data) { console.log(data); return false;},
-	      'dataType': 'jsonp',
-	      'jsonp': 'json.wrf'
-	    });
-	       //return data.results[0].geometry.location;
-	       return false;
-	  });
-	}
-
-	</script>
+	
 
 </body>
 </html>

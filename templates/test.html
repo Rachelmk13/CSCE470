@@ -48,12 +48,14 @@ function query(vars){
 
       var query_str = "geometry.location.lat:["+lat_min+" TO "+lat_max+"] AND geometry.location.lng:["+lng_min+" TO "+lng_max+"]";
       $.ajax({
-      'url': 'http://localhost:8983/solr/xing/select',
+      'url': 'http://localhost:8983/solr/onPointCore/select',
       'data': {'wt':'json', 'q':query_str, 'fl':'*'},
       'success': function(data) { console.log(data); },
       'dataType': 'jsonp',
       'jsonp': 'json.wrf'
     });
+      alert("pause");
+      sessionStorage.setItem("returnedData", JSON.stringify(data));
       return data.results[0].geometry.location;
   });
 }
